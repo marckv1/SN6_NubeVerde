@@ -1,0 +1,69 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ==========================================
+    // FUNCIONES AUXILIARES
+    // ==========================================
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isValidLectura(data) {
+      return data.keys().hasAll(['id_punto', 'fecha', 'consumo_kwh', 'estado']) &&
+             data.id_punto is string &&
+             data.id_punto.size() > 0 &&
+             data.consumo_kwh is number &&
+             data.consumo_kwh >= 0 &&
+             data.consumo_kwh < 10000 &&
+             data.estado in ['activo', 'inactivo', 'error'] &&
+             data.fecha is timestamp &&
+             data.fecha <= request.time + duration.value(5, 'm');
+    }
+
+    // ==========================================
+    // COLECCIÓN: puntos_monitoreo
+    // ==========================================
+    match /puntos_monitoreo/{puntoId} {
+      // Lectura: dashboard requiere autenticación
+      allow read: if isAuthenticated();
+
+      // Escritura: solo usuarios autenticados con rol admin
+      allow create, update: if isAuthenticated() && request.auth.token.role == "admin";
+
+      // Eliminación: bloqueada
+      allow delete: if false;
+    }
+
+    // ==========================================
+    // COLECCIÓN: lecturas
+    // ==========================================
+    match /lecturas/{lecturaId} {
+      // Lectura: usuarios autenticados, máximo 1000 documentos por consulta
+      allow read: if isAuthenticated() && request.query.limit <= 1000;
+
+      // Escritura: usuarios autenticados con validación de estructura
+      allow create: if isAuthenticated() && isValidLectura(request.resource.data);
+
+      // Actualización / Eliminación bloqueadas
+      allow update, delete: if false;
+    }
+
+    // ==========================================
+    // COLECCIÓN: configuracion
+    // ==========================================
+    match /configuracion/{configId} {
+      // Lectura: solo usuarios autenticados
+      allow read: if isAuthenticated();
+      // Escritura bloqueada
+      allow write: if false;
+    }
+
+    // ==========================================
+    // BLOQUEAR TODO LO DEMÁS
+    // ==========================================
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
