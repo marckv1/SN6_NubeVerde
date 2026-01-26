@@ -1,1 +1,4 @@
-
+Se agrega el script adminSDK para conexion a firebase, este admin solo debe usarse para pruebas iniciales de conexion exitosa,
+posteriormente se debe entrar con credenciales autenticado dado que el script admin tienen privilegios que incluso pueden eliminar o 
+alterar las estucturas de datos.
+Por seguridad se esconden credenciales de admin.
