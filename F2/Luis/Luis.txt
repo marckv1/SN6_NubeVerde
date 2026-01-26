@@ -1,4 +1,9 @@
-Se agrega el script adminSDK para conexion a firebase, este admin solo debe usarse para pruebas iniciales de conexion exitosa,
+#Se agrega el script adminSDK para conexion a firebase, este admin solo debe usarse para pruebas iniciales de conexion exitosa,
 posteriormente se debe entrar con credenciales autenticado dado que el script admin tienen privilegios que incluso pueden eliminar o 
 alterar las estucturas de datos.
 Por seguridad se esconden credenciales de admin.
+
+#Se agregan tambien las reglas de autenticacion en firestore, la cual incluye logica para permitir solo crear nuevas lecturas que mantengan la estructura establecida por elequipo,
+de modo que no se rompa y provoque inconvenientes en lectura de dashboard.
+
+#Se agregan ademas la evidencia de los usuarios disponibles para autenticacion de firestore
