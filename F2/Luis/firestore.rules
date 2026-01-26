@@ -1,0 +1,71 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isValidLectura(data) {
+      return data.keys().hasAll(['id_punto', 'fecha', 'consumo_kwh', 'estado']) &&
+             data.id_punto is string &&
+             data.id_punto.size() > 0 &&
+             data.consumo_kwh is number &&
+             data.consumo_kwh >= 0 &&
+             data.consumo_kwh < 10000 &&
+             data.estado in ['activo', 'inactivo', 'error'] &&
+             data.fecha is timestamp &&
+             data.fecha <= request.time + duration.value(5, 'm');
+    }
+
+    // ==========================================
+    // COLECCIÓN: puntos_monitoreo
+    // ==========================================
+    match /puntos_monitoreo/{puntoId} {
+
+      // Lectura
+      allow read: if isAuthenticated();
+
+      // Crear: solo admin
+      allow create: if isAuthenticated() && request.auth.token.role == "admin";
+
+      // Update: cualquier usuario autenticado
+      // SOLO puede cambiar el campo "activo" (boolean)
+      allow update: if isAuthenticated()
+        && request.resource.data.diff(resource.data)
+             .changedKeys()
+             .hasOnly(['activo'])
+        && request.resource.data.activo is bool;
+
+      // Eliminar bloqueado
+      allow delete: if false;
+    }
+
+    // ==========================================
+    // COLECCIÓN: lecturas
+    // ==========================================
+    match /lecturas/{lecturaId} {
+
+      allow read: if isAuthenticated() && request.query.limit <= 1000;
+
+      allow create: if isAuthenticated() && isValidLectura(request.resource.data);
+
+      allow update, delete: if false;
+    }
+
+    // ==========================================
+    // COLECCIÓN: configuracion
+    // ==========================================
+    match /configuracion/{configId} {
+      allow read: if isAuthenticated();
+      allow write: if false;
+    }
+
+    // ==========================================
+    // BLOQUEAR TODO LO DEMÁS
+    // ==========================================
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
