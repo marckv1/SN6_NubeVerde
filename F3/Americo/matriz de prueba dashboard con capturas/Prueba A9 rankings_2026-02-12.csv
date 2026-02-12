@@ -1,0 +1,15 @@
+Top Consumidores
+Rank,ID,Nombre,Consumo Total kWh,Eficiencia %
+1,"N7","Centro de Datos",1029.67,100.9
+2,"N10","Sala de Servidores",829.38,103.7
+3,"N6","Cafetería Estudiantil",310.93,97.2
+4,"N9","Gimnasio Deportivo",258.14,101.2
+5,"N1","Auditorio Principal",240.14,96.8
+
+Top Ineficientes
+Rank,ID,Nombre,Eficiencia %,Excedente kWh
+1,"N10","Sala de Servidores",103.7,29.38
+2,"N5","Biblioteca Central",102.5,5.05
+3,"N3","Aula Multimedia 202",101.9,1.96
+4,"N9","Gimnasio Deportivo",101.2,3.14
+5,"N7","Centro de Datos",100.9,9.67
