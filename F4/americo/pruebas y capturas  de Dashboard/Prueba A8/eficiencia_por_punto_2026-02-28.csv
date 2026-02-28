@@ -1,0 +1,8 @@
+ID Punto,Nombre,Eficiencia %,Consumo Promedio kWh,Consumo Base kWh,Lecturas
+"N12","Laboratorio de Cómputo B",98.4,11.32,11.5,17
+"N3","Aula Multimedia 202",102.3,6.14,6,17
+"N7","Centro de Datos",123.6,74.16,60,16
+"N5","Biblioteca Central",102.1,12.26,12,17
+"N4","Aula Virtual 303",107.4,5.15,4.8,17
+"N2","Aula Magna 101",104.9,5.77,5.5,16
+"N1","Auditorio Principal",99.1,15.36,15.5,16

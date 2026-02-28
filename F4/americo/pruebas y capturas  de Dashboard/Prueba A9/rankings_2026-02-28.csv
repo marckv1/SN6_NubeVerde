@@ -1,0 +1,15 @@
+Top Consumidores
+Rank,ID,Nombre,Consumo Total kWh,Eficiencia %
+1,"N7","Centro de Datos",1314.33,128.9
+2,"N1","Auditorio Principal",250.96,101.2
+3,"N5","Biblioteca Central",205.27,100.6
+4,"N12","Laboratorio de Cómputo B",192.26,98.3
+5,"N3","Aula Multimedia 202",96.16,100.2
+
+Top Ineficientes
+Rank,ID,Nombre,Eficiencia %,Excedente kWh
+1,"N7","Centro de Datos",128.9,294.33
+2,"N4","Aula Virtual 303",105.2,3.97
+3,"N2","Aula Magna 101",103.7,3.28
+4,"N1","Auditorio Principal",101.2,2.96
+5,"N5","Biblioteca Central",100.6,1.27
